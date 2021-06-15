@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables
     private List<Rigidbody> _playerRb = new List<Rigidbody>();
+    private int _currTotalPlayerCount;
     #endregion
 
     #region Unity Callbacks
@@ -89,8 +90,10 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Starting
     void IntialiseGame()
     {
+        UpdateText(1);
         fadeBG.Play("FadeIn");
         gmData.ChangeState("Menu");
         _playerRb.Add(player.GetComponent<Rigidbody>());
@@ -102,7 +105,9 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         DisableCursor();
     }
+    #endregion
 
+    #region Player
     void MovePlayer()
     {
         if (Input.GetMouseButton(0))
@@ -115,9 +120,17 @@ public class GameManager : MonoBehaviour
 
                 _playerRb[i].velocity = Vector3.ClampMagnitude(_playerRb[i].velocity, playerSpeedClamp);
             }
-
         }
     }
+
+    void UpdateText(int players)
+    {
+        _currTotalPlayerCount += players;
+
+        totalPlayerCountText.text = $"{_currTotalPlayerCount}";
+    }
+    #endregion
+
 
     #endregion
 
@@ -129,6 +142,8 @@ public class GameManager : MonoBehaviour
             GameObject playerObj = Instantiate(playerPrefab, player.transform.position, Quaternion.identity, playerPosParent);
             _playerRb.Add(playerObj.GetComponent<Rigidbody>());
         }
+
+        UpdateText(count);
     }
     #endregion
 }

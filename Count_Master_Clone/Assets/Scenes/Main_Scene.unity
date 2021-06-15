@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,6 +152,7 @@ Transform:
   m_Children:
   - {fileID: 925520010}
   - {fileID: 331803159}
+  - {fileID: 1189373092}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1311,6 +1312,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170278732}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1189373091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1189373092}
+  m_Layer: 0
+  m_Name: Cloned_Players
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1189373092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189373091}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 187532863}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1365168240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,7 +1725,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654962055}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.89, y: 0.6323, z: 0.6123}
+  m_LocalPosition: {x: -3.73, y: 0.6323, z: 0.6123}
   m_LocalScale: {x: 0.5255374, y: 2.2646, z: 4.4440756}
   m_Children: []
   m_Father: {fileID: 2035070825}
@@ -1943,7 +1974,7 @@ MonoBehaviour:
   player: {fileID: 1552742020}
   playerSpeed: 50
   playerSpeedClamp: 7
-  playerPosParent: {fileID: 187532863}
+  playerPosParent: {fileID: 1189373092}
   fadeBG: {fileID: 1433485265}
   totalPlayerCountText: {fileID: 192081069}
   ground: {fileID: 2024203370}
@@ -2046,7 +2077,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764313357}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000004470348}
-  m_LocalPosition: {x: 3.72, y: 0.6323, z: 0.614}
+  m_LocalPosition: {x: 3.52, y: 0.6323, z: 0.614}
   m_LocalScale: {x: 0.5255374, y: 2.2646, z: 4.4440756}
   m_Children: []
   m_Father: {fileID: 2035070825}
