@@ -13,8 +13,13 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
     public Transform playerPosParent;
 
+    [Space, Header("Camera")]
+    public GameObject cam1;
+    public GameObject cam2;
+
     [Space, Header("UI")]
     public Animator fadeBG;
+    public Animator fastFadeBG;
     public TextMeshProUGUI totalPlayerCountText;
 
     [Space, Header("Ground")]
@@ -23,10 +28,12 @@ public class GameManager : MonoBehaviour
 
     [Space, Header("Panels")]
     public GameObject menuPanel;
+    public GameObject deathPanel;
     #endregion
 
     #region Private Variables
     private int _currTotalPlayerCount;
+    [SerializeField] private int _currLevel;
     #endregion
 
     #region Unity Callbacks
@@ -36,18 +43,24 @@ public class GameManager : MonoBehaviour
     {
         GateTrigger.OnPlayerIncrement += OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement += OnPlayerDecrementEventReceived;
+
+        PlayerController.OnLevelEnd += OnLevelEndEventReceived;
     }
 
     void OnDisable()
     {
         GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
+
+        PlayerController.OnLevelEnd -= OnLevelEndEventReceived;
     }
 
     void OnDestroy()
     {
         GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
+
+        PlayerController.OnLevelEnd -= OnLevelEndEventReceived;
     }
     #endregion
 
@@ -80,10 +93,9 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Buttons
-    public void OnClick_ExitGame()
-    {
-        gmData.QuitGame();
-    }
+    public void OnClick_RestartGame() => StartCoroutine(RestartDelay());
+
+    public void OnClick_ExitGame() => StartCoroutine(ExitDelay());
     #endregion
 
     #region Starting
@@ -115,6 +127,13 @@ public class GameManager : MonoBehaviour
             _currTotalPlayerCount -= players;
             totalPlayerCountText.text = $"{_currTotalPlayerCount}";
         }
+
+        if (_currTotalPlayerCount <= 0)
+        {
+            gmData.ChangeState("Dead");
+            EnableCursor();
+            deathPanel.SetActive(true);
+        }
     }
     #endregion
 
@@ -129,9 +148,35 @@ public class GameManager : MonoBehaviour
         UpdateIncremenText(true, count);
     }
 
-    void OnPlayerDecrementEventReceived(int count)
+    void OnPlayerDecrementEventReceived(int count) => UpdateIncremenText(false, count);
+
+    void OnLevelEndEventReceived() => StartCoroutine(LevelEndDelay());
+    #endregion
+
+    #region Coroutines
+    IEnumerator RestartDelay()
     {
-        UpdateIncremenText(false, count);
+        fadeBG.Play("FadeOut");
+        yield return new WaitForSeconds(1);
+        gmData.NextLevel(_currLevel);
+    }
+
+    IEnumerator ExitDelay()
+    {
+        gmData.ChangeState("End");
+        fadeBG.Play("FadeOut");
+        yield return new WaitForSeconds(1);
+        gmData.QuitGame();
+    }
+
+    IEnumerator LevelEndDelay()
+    {
+        fastFadeBG.Play("FadeOut");
+        yield return new WaitForSeconds(0.5f);
+        totalPlayerCountText.gameObject.SetActive(false);
+        cam1.SetActive(false);
+        cam2.SetActive(true);
+        fastFadeBG.Play("FadeIn");
     }
     #endregion
 }

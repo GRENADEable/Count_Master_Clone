@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fight_Trigger
+  - End
   layers:
   - Default
   - TransparentFX

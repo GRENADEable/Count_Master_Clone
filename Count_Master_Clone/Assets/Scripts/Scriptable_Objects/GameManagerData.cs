@@ -30,10 +30,7 @@ public class GameManagerData : ScriptableObject
     #region My Functions
 
     #region Scenes
-    public void StartNewGame() => Application.LoadLevel("Level_1");
-    public void Menu() => Application.LoadLevel("Menu");
-
-    public void NextLevel(int index) => Application.LoadLevel($"Level_{index}");
+    public void NextLevel(int index) => Application.LoadLevel($"Lvl_{index}");
 
     public void QuitGame()
     {

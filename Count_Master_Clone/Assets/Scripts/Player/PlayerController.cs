@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Player")]
     public float playerSpeed = 50f;
     public float playerSpeedClamp = 7f;
+
+    public delegate void SendEvents();
+    public static event SendEvents OnLevelEnd;
     #endregion
 
     #region Private Variables
@@ -24,6 +27,15 @@ public class PlayerController : MonoBehaviour
     {
         if (gmData.currState == GameManagerData.GameState.Game)
             MovePlayer();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("End"))
+        {
+            other.enabled = false;
+            OnLevelEnd?.Invoke(); // Event sent to GameManager Script;
+        }
     }
     #endregion
 
