@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Animator fadeBG;
     public Animator fastFadeBG;
     public TextMeshProUGUI totalPlayerCountText;
+    public TextMeshProUGUI totalScoreText;
 
     [Space, Header("Ground")]
     public GameObject ground;
@@ -29,10 +30,12 @@ public class GameManager : MonoBehaviour
     [Space, Header("Panels")]
     public GameObject menuPanel;
     public GameObject deathPanel;
+    public GameObject winPanel;
     #endregion
 
     #region Private Variables
     private int _currTotalPlayerCount;
+    private int _currScore;
     [SerializeField] private int _currLevel;
     #endregion
 
@@ -44,7 +47,8 @@ public class GameManager : MonoBehaviour
         GateTrigger.OnPlayerIncrement += OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement += OnPlayerDecrementEventReceived;
 
-        PlayerController.OnLevelEnd += OnLevelEndEventReceived;
+        PlayerController.OnLevelEndTrigger += OnLevelEndTriggerEventReceived;
+        PlayerController.OnLevelEndCount += OnLevelEndCountEventRecieved;
     }
 
     void OnDisable()
@@ -52,7 +56,8 @@ public class GameManager : MonoBehaviour
         GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
 
-        PlayerController.OnLevelEnd -= OnLevelEndEventReceived;
+        PlayerController.OnLevelEndTrigger -= OnLevelEndTriggerEventReceived;
+        PlayerController.OnLevelEndCount -= OnLevelEndCountEventRecieved;
     }
 
     void OnDestroy()
@@ -60,7 +65,8 @@ public class GameManager : MonoBehaviour
         GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
 
-        PlayerController.OnLevelEnd -= OnLevelEndEventReceived;
+        PlayerController.OnLevelEndTrigger -= OnLevelEndTriggerEventReceived;
+        PlayerController.OnLevelEndCount -= OnLevelEndCountEventRecieved;
     }
     #endregion
 
@@ -150,7 +156,15 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerDecrementEventReceived(int count) => UpdateIncremenText(false, count);
 
-    void OnLevelEndEventReceived() => StartCoroutine(LevelEndDelay());
+    void OnLevelEndTriggerEventReceived() => StartCoroutine(LevelEndDelay());
+
+    void OnLevelEndCountEventRecieved()
+    {
+        winPanel.SetActive(true);
+        _currScore++;
+        totalScoreText.text = $"{_currScore}";
+        EnableCursor();
+    }
     #endregion
 
     #region Coroutines

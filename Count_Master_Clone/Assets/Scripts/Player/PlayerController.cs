@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     public float playerSpeedClamp = 7f;
 
     public delegate void SendEvents();
-    public static event SendEvents OnLevelEnd;
+    public static event SendEvents OnLevelEndTrigger;
+    public static event SendEvents OnLevelEndCount;
     #endregion
 
     #region Private Variables
@@ -31,10 +32,16 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("End"))
+        if (other.CompareTag("End_Trigger"))
         {
             other.enabled = false;
-            OnLevelEnd?.Invoke(); // Event sent to GameManager Script;
+            OnLevelEndTrigger?.Invoke(); // Event sent to GameManager Script;
+        }
+
+        if (other.CompareTag("End"))
+        {
+            OnLevelEndCount?.Invoke(); // Event sent to GameManager Script;
+            Destroy(gameObject);
         }
     }
     #endregion
