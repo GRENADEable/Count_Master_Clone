@@ -7,10 +7,10 @@ public class GateTrigger : MonoBehaviour
 {
     #region Public Variables
     public int playerIncrement;
-    public Collider[] _col;
+    public Collider[] col;
 
     public delegate void SendEventsInt(int increment);
-    public static event SendEventsInt OnPlayerTrigger;
+    public static event SendEventsInt OnPlayerIncrement;
     #endregion
 
     #region Private Variables
@@ -29,7 +29,7 @@ public class GateTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             DisableColliders();
-            OnPlayerTrigger?.Invoke(playerIncrement); // Evvent sent to GameManager Script;
+            OnPlayerIncrement?.Invoke(playerIncrement); // Evvent sent to GameManager Script;
         }
     }
     #endregion
@@ -37,8 +37,8 @@ public class GateTrigger : MonoBehaviour
     #region My Functions
     void DisableColliders()
     {
-        for (int i = 0; i < _col.Length; i++)
-            _col[i].enabled = false;
+        for (int i = 0; i < col.Length; i++)
+            col[i].enabled = false;
     }
     #endregion
 }

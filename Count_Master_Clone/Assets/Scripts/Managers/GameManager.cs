@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
 
     [Space, Header("Player")]
     public GameObject playerPrefab;
-    public GameObject player;
-    public float playerSpeed = 1f;
-    public float playerSpeedClamp = 2f;
     public Transform playerPosParent;
 
     [Space, Header("UI")]
@@ -29,7 +26,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Private Variables
-    private List<Rigidbody> _playerRb = new List<Rigidbody>();
     private int _currTotalPlayerCount;
     #endregion
 
@@ -38,17 +34,20 @@ public class GameManager : MonoBehaviour
     #region Events
     void OnEnable()
     {
-        GateTrigger.OnPlayerTrigger += OnPlayerTriggerEventReceived;
+        GateTrigger.OnPlayerIncrement += OnPlayerIncrementEventReceived;
+        FightTrigger.OnPlayerDecrement += OnPlayerDecrementEventReceived;
     }
 
     void OnDisable()
     {
-        GateTrigger.OnPlayerTrigger -= OnPlayerTriggerEventReceived;
+        GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
+        FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
     }
 
     void OnDestroy()
     {
-        GateTrigger.OnPlayerTrigger -= OnPlayerTriggerEventReceived;
+        GateTrigger.OnPlayerIncrement -= OnPlayerIncrementEventReceived;
+        FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
     }
     #endregion
 
@@ -57,10 +56,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (gmData.currState == GameManagerData.GameState.Game)
-        {
-            MovePlayer();
-            ground.transform.Translate(Vector3.back * groundSpeed * Time.deltaTime);
-        }
+            ground.transform.Translate(groundSpeed * Time.deltaTime * Vector3.back);
 
         if (Input.GetMouseButtonDown(0) && gmData.currState == GameManagerData.GameState.Menu)
             StartGame();
@@ -93,10 +89,9 @@ public class GameManager : MonoBehaviour
     #region Starting
     void IntialiseGame()
     {
-        UpdateText(1);
+        UpdateIncremenText(true, 1);
         fadeBG.Play("FadeIn");
         gmData.ChangeState("Menu");
-        _playerRb.Add(player.GetComponent<Rigidbody>());
     }
 
     void StartGame()
@@ -108,42 +103,35 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Player
-    void MovePlayer()
+    void UpdateIncremenText(bool isIncreasing, int players)
     {
-        if (Input.GetMouseButton(0))
+        if (isIncreasing)
         {
-            float horizontal = Input.GetAxis("Mouse X") * playerSpeed;
-
-            for (int i = 0; i < _playerRb.Count; i++)
-            {
-                _playerRb[i].AddForce(Vector3.right * horizontal * Time.deltaTime, ForceMode.Impulse);
-
-                _playerRb[i].velocity = Vector3.ClampMagnitude(_playerRb[i].velocity, playerSpeedClamp);
-            }
+            _currTotalPlayerCount += players;
+            totalPlayerCountText.text = $"{_currTotalPlayerCount}";
+        }
+        else
+        {
+            _currTotalPlayerCount -= players;
+            totalPlayerCountText.text = $"{_currTotalPlayerCount}";
         }
     }
-
-    void UpdateText(int players)
-    {
-        _currTotalPlayerCount += players;
-
-        totalPlayerCountText.text = $"{_currTotalPlayerCount}";
-    }
     #endregion
-
 
     #endregion
 
     #region Events
-    void OnPlayerTriggerEventReceived(int count)
+    void OnPlayerIncrementEventReceived(int count)
     {
         for (int i = 0; i < count; i++)
-        {
-            GameObject playerObj = Instantiate(playerPrefab, player.transform.position, Quaternion.identity, playerPosParent);
-            _playerRb.Add(playerObj.GetComponent<Rigidbody>());
-        }
+            Instantiate(playerPrefab, playerPosParent.position, Quaternion.identity, playerPosParent);
 
-        UpdateText(count);
+        UpdateIncremenText(true, count);
+    }
+
+    void OnPlayerDecrementEventReceived(int count)
+    {
+        UpdateIncremenText(false, count);
     }
     #endregion
 }
