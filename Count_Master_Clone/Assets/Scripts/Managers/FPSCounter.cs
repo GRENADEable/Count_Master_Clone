@@ -8,7 +8,7 @@ public class FPSCounter : MonoBehaviour
 
     void Start()
     {
-        Application.targetFrameRate = 75;
+        //Application.targetFrameRate = 75;
         DontDestroyOnLoad(gameObject);
     }
 
