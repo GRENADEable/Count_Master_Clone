@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
 
     [Space, Header("Obstacles")]
     public Animator[] movingSpikes;
+
+    [Space, Header("Colliders")]
+    public Collider[] playerConfineCol;
     #endregion
 
     #region Private Variables
@@ -192,6 +195,20 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < movingSpikes.Length; i++)
             movingSpikes[i].Play("SpikeAnim");
+    }
+
+    public void OnPlayerColEnabledEventReceived(bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            for (int i = 0; i < playerConfineCol.Length; i++)
+                playerConfineCol[i].enabled = true;
+        }
+        else
+        {
+            for (int i = 0; i < playerConfineCol.Length; i++)
+                playerConfineCol[i].enabled = false;
+        }
     }
     #endregion
 
