@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float playerSpeedClamp = 7f;
 
     public delegate void SendEvents();
+    public static event SendEvents OnPlayerDead;
     public static event SendEvents OnLevelEndTrigger;
     public static event SendEvents OnLevelEndCount;
     #endregion
@@ -32,6 +33,12 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Obstacle"))
+        {
+            OnPlayerDead?.Invoke();
+            Destroy(gameObject);
+        }
+
         if (other.CompareTag("End_Trigger"))
         {
             other.enabled = false;

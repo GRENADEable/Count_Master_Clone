@@ -7,6 +7,7 @@ TagManager:
   - Fight_Trigger
   - End_Trigger
   - End
+  - Obstacle
   layers:
   - Default
   - TransparentFX

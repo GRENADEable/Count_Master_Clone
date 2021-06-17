@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Space, Header("UI")]
     public Animator fadeBG;
-    public Animator fastFadeBG;
+    public Animator fadeFastBG;
     public TextMeshProUGUI totalPlayerCountText;
     public TextMeshProUGUI totalScoreText;
 
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         FightTrigger.OnPlayerDecrement += OnPlayerDecrementEventReceived;
 
         PlayerController.OnLevelEndTrigger += OnLevelEndTriggerEventReceived;
+        PlayerController.OnPlayerDead += OnPlayerDeadEventReceived;
         PlayerController.OnLevelEndCount += OnLevelEndCountEventRecieved;
     }
 
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
 
         PlayerController.OnLevelEndTrigger -= OnLevelEndTriggerEventReceived;
+        PlayerController.OnPlayerDead -= OnPlayerDeadEventReceived;
         PlayerController.OnLevelEndCount -= OnLevelEndCountEventRecieved;
     }
 
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
         FightTrigger.OnPlayerDecrement -= OnPlayerDecrementEventReceived;
 
         PlayerController.OnLevelEndTrigger -= OnLevelEndTriggerEventReceived;
+        PlayerController.OnPlayerDead -= OnPlayerDeadEventReceived;
         PlayerController.OnLevelEndCount -= OnLevelEndCountEventRecieved;
     }
     #endregion
@@ -99,6 +102,12 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Buttons
+    public void OnClick_NextLevel()
+    {
+        _currLevel++;
+        StartCoroutine(StartNextLevelDelay());
+    }
+
     public void OnClick_RestartGame() => StartCoroutine(RestartDelay());
 
     public void OnClick_ExitGame() => StartCoroutine(ExitDelay());
@@ -114,6 +123,7 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
+        totalPlayerCountText.gameObject.SetActive(true);
         gmData.ChangeState("Game");
         menuPanel.SetActive(false);
         DisableCursor();
@@ -155,6 +165,7 @@ public class GameManager : MonoBehaviour
     }
 
     void OnPlayerDecrementEventReceived(int count) => UpdateIncremenText(false, count);
+    void OnPlayerDeadEventReceived() => UpdateIncremenText(false, 1);
 
     void OnLevelEndTriggerEventReceived() => StartCoroutine(LevelEndDelay());
 
@@ -185,12 +196,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LevelEndDelay()
     {
-        fastFadeBG.Play("FadeOut");
+        fadeFastBG.Play("FadeOut");
         yield return new WaitForSeconds(0.5f);
         totalPlayerCountText.gameObject.SetActive(false);
         cam1.SetActive(false);
         cam2.SetActive(true);
-        fastFadeBG.Play("FadeIn");
+        fadeFastBG.Play("FadeIn");
+    }
+
+    IEnumerator StartNextLevelDelay()
+    {
+        fadeFastBG.Play("FadeOut");
+        yield return new WaitForSeconds(1f);
+        gmData.NextLevel(_currLevel);
     }
     #endregion
 }
