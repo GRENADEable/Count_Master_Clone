@@ -126,6 +126,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gmData: {fileID: 11400000, guid: 4ddc4774b44b1de459541a2180b853b7, type: 2}
-  playerSpeed: 50
-  playerSpeedClamp: 7
-  _playerRb: {fileID: 0}
+  playerSpeed: 60
+  playerSpeedClamp: 8

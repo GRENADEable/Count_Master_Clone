@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameManagerData gmData;
 
     [Space, Header("Player")]
-    public float playerSpeed = 50f;
+    public float playerInputSpeed = 60f;
     public float playerSpeedClamp = 7f;
 
     public delegate void SendEvents();
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            float horizontal = Input.GetAxis("Mouse X") * playerSpeed;
+            float horizontal = Input.GetAxis("Mouse X") * playerInputSpeed;
 
             _playerRb.AddForce(horizontal * Time.deltaTime * Vector3.right, ForceMode.Impulse);
             _playerRb.velocity = Vector3.ClampMagnitude(_playerRb.velocity, playerSpeedClamp);
