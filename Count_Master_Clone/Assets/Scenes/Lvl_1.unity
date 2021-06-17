@@ -4338,6 +4338,7 @@ MonoBehaviour:
   menuPanel: {fileID: 969623676}
   deathPanel: {fileID: 432923884}
   winPanel: {fileID: 183756881}
+  movingSpikes: []
   _currLevel: 1
 --- !u!1001 &1745295461
 PrefabInstance:
@@ -5271,7 +5272,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1726065181}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnClick_RestartGame
+        m_MethodName: OnClick_RestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

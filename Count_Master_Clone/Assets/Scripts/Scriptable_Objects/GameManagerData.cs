@@ -32,6 +32,8 @@ public class GameManagerData : ScriptableObject
     #region Scenes
     public void NextLevel(int index) => Application.LoadLevel($"Lvl_{index}");
 
+    public void RestartGame() => Application.LoadLevel("Lvl_1");
+
     public void QuitGame()
     {
         Application.Quit();

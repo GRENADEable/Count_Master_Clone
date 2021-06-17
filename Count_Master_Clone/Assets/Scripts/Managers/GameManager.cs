@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     public GameObject menuPanel;
     public GameObject deathPanel;
     public GameObject winPanel;
+
+    [Space, Header("Obstacles")]
+    public Animator[] movingSpikes;
     #endregion
 
     #region Private Variables
@@ -87,32 +90,6 @@ public class GameManager : MonoBehaviour
 
     #region My Functions
 
-    #region Cursor
-    void EnableCursor()
-    {
-        gmData.VisibleCursor(true);
-        gmData.LockCursor(false);
-    }
-
-    void DisableCursor()
-    {
-        gmData.VisibleCursor(false);
-        gmData.LockCursor(true);
-    }
-    #endregion
-
-    #region Buttons
-    public void OnClick_NextLevel()
-    {
-        _currLevel++;
-        StartCoroutine(StartNextLevelDelay());
-    }
-
-    public void OnClick_RestartGame() => StartCoroutine(RestartDelay());
-
-    public void OnClick_ExitGame() => StartCoroutine(ExitDelay());
-    #endregion
-
     #region Starting
     void IntialiseGame()
     {
@@ -153,9 +130,39 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Cursor
+    void EnableCursor()
+    {
+        gmData.VisibleCursor(true);
+        gmData.LockCursor(false);
+    }
+
+    void DisableCursor()
+    {
+        gmData.VisibleCursor(false);
+        gmData.LockCursor(true);
+    }
+    #endregion
+
+    #region Buttons
+    public void OnClick_NextLevel()
+    {
+        _currLevel++;
+        StartCoroutine(StartNextLevelDelay());
+    }
+
+    public void OnClick_RestartGame() => StartCoroutine(RestartGameDelay());
+
+    public void OnClick_RestartLevel() => StartCoroutine(RestartLevelDelay());
+
+    public void OnClick_ExitGame() => StartCoroutine(ExitDelay());
+    #endregion
+
     #endregion
 
     #region Events
+
+    #region Player
     void OnPlayerIncrementEventReceived(int count)
     {
         for (int i = 0; i < count; i++)
@@ -166,7 +173,9 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerDecrementEventReceived(int count) => UpdateIncremenText(false, count);
     void OnPlayerDeadEventReceived() => UpdateIncremenText(false, 1);
+    #endregion
 
+    #region Level
     void OnLevelEndTriggerEventReceived() => StartCoroutine(LevelEndDelay());
 
     void OnLevelEndCountEventRecieved()
@@ -178,12 +187,29 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Level Triggers
+    public void OnMovingSpikesEventReceived()
+    {
+        for (int i = 0; i < movingSpikes.Length; i++)
+            movingSpikes[i].Play("SpikeAnim");
+    }
+    #endregion
+
+    #endregion
+
     #region Coroutines
-    IEnumerator RestartDelay()
+    IEnumerator RestartLevelDelay()
     {
         fadeBG.Play("FadeOut");
         yield return new WaitForSeconds(1);
         gmData.NextLevel(_currLevel);
+    }
+
+    IEnumerator RestartGameDelay()
+    {
+        fadeBG.Play("FadeOut");
+        yield return new WaitForSeconds(1);
+        gmData.RestartGame();
     }
 
     IEnumerator ExitDelay()
