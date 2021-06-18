@@ -108,10 +108,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d7f43cbefaabb41b662f455f194b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIncrement: 50
+  playerIncrement: 13
   col:
   - {fileID: 1611534247028712893}
   - {fileID: 1611534248022145416}
+  incrementAud: {fileID: 0}
+  incrementSFX: {fileID: 0}
 --- !u!1 &1611534248022145414
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,10 +222,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d7f43cbefaabb41b662f455f194b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIncrement: 62
+  playerIncrement: 76
   col:
   - {fileID: 1611534247028712893}
   - {fileID: 1611534248022145416}
+  incrementAud: {fileID: 0}
+  incrementSFX: {fileID: 0}
 --- !u!1 &1611534248656313201
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,10 +440,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d7f43cbefaabb41b662f455f194b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIncrement: 50
+  playerIncrement: 16
   col:
   - {fileID: 3418890630381301398}
   - {fileID: 8995593399183771757}
+  incrementAud: {fileID: 0}
+  incrementSFX: {fileID: 8300000, guid: f8c348c2d3344fc48bd162dddb7e9f64, type: 3}
 --- !u!65 &8995593399183771757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -465,10 +471,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d7f43cbefaabb41b662f455f194b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerIncrement: 62
+  playerIncrement: 6
   col:
   - {fileID: 3418890630381301398}
   - {fileID: 8995593399183771757}
+  incrementAud: {fileID: 0}
+  incrementSFX: {fileID: 8300000, guid: f8c348c2d3344fc48bd162dddb7e9f64, type: 3}
 --- !u!1 &5576328654878719578
 GameObject:
   m_ObjectHideFlags: 0

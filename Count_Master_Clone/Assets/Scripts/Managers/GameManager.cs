@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI totalPlayerCountText;
     public TextMeshProUGUI totalScoreText;
 
+    [Space, Header("Audios")]
+    public AudioSource bGAud;
+
     [Space, Header("Ground")]
     public GameObject ground;
     public float groundSpeed = 1f;
@@ -42,6 +45,9 @@ public class GameManager : MonoBehaviour
     #region Private Variables
     private int _currTotalPlayerCount;
     private int _currScore;
+    [SerializeField] private bool _isPlaying = true;
+    [SerializeField] private bool _isAudTimeRunning = true;
+    [SerializeField] private float _currAudTime = 0f;
     [SerializeField] private int _currLevel;
     #endregion
 
@@ -88,6 +94,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && gmData.currState == GameManagerData.GameState.Menu)
             StartGame();
+
+        SetBGAudVolume();
     }
     #endregion
 
@@ -107,6 +115,32 @@ public class GameManager : MonoBehaviour
         gmData.ChangeState("Game");
         menuPanel.SetActive(false);
         DisableCursor();
+    }
+
+    void SetBGAudVolume()
+    {
+        if (_isPlaying)
+        {
+            if (_isAudTimeRunning)
+            {
+                _currAudTime += Time.deltaTime;
+                bGAud.volume = _currAudTime;
+
+                if (_currAudTime >= 1)
+                    _isAudTimeRunning = false;
+            }
+        }
+        else
+        {
+            if (_isAudTimeRunning)
+            {
+                _currAudTime -= Time.deltaTime;
+                bGAud.volume = _currAudTime;
+
+                if (_currAudTime <= 0)
+                    _isAudTimeRunning = false;
+            }
+        }
     }
     #endregion
 
@@ -159,6 +193,12 @@ public class GameManager : MonoBehaviour
     public void OnClick_RestartLevel() => StartCoroutine(RestartLevelDelay());
 
     public void OnClick_ExitGame() => StartCoroutine(ExitDelay());
+
+    public void OnClick_FadeOutAud()
+    {
+        _isPlaying = false;
+        _isAudTimeRunning = true;
+    }
     #endregion
 
     #endregion

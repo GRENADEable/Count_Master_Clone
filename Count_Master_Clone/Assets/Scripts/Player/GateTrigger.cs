@@ -9,6 +9,10 @@ public class GateTrigger : MonoBehaviour
     public int playerIncrement;
     public Collider[] col;
 
+    [Space, Header("Audios")]
+    public AudioSource incrementAud;
+    public AudioClip incrementSFX;
+
     public delegate void SendEventsInt(int increment);
     public static event SendEventsInt OnPlayerIncrement;
     #endregion
@@ -30,6 +34,7 @@ public class GateTrigger : MonoBehaviour
         {
             DisableColliders();
             OnPlayerIncrement?.Invoke(playerIncrement); // Evvent sent to GameManager Script;
+            incrementAud.PlayOneShot(incrementSFX);
         }
     }
     #endregion

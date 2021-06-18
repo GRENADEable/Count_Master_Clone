@@ -8,7 +8,7 @@ public class GameManagerData : ScriptableObject
     #region Public Variables
     [Space, Header("Enums")]
     public GameState currState = GameState.Game;
-    public enum GameState { Menu, Game, Dead, Paused, End };
+    public enum GameState { Menu, Game, Dead, End };
     #endregion
 
     #region Private Variables
@@ -80,9 +80,6 @@ public class GameManagerData : ScriptableObject
 
         if (state.Contains("Dead"))
             currState = GameState.Dead;
-
-        if (state.Contains("Paused"))
-            currState = GameState.Paused;
 
         if (state.Contains("End"))
             currState = GameState.End;
